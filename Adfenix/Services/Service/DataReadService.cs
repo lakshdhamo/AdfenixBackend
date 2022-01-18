@@ -1,15 +1,6 @@
-﻿using Adfenix.RequestModels.CommandRequestModels;
-using Adfenix.RequestModels.QueryRequestModels;
+﻿using Adfenix.RequestModels.QueryRequestModels;
 using Adfenix.Services.Interface;
 using Adfenix.Services.Service.Servers;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Adfenix.Services.Service
 {
@@ -33,11 +24,13 @@ namespace Adfenix.Services.Service
         {
             try
             {
-                Server server = new ServerCount();
+                /// Prepare Server - Generic server based on Server Id
+                ServerBase server = new ServerCount();
                 Parameter[] parameters = server.getParameters();
                 ((IntParameter)parameters[0]).SetValue(serverId);
 
-                return await server.ExecuteAsync();
+                /// Call Server
+                return await new Server(server).FetchCountAsync();
             }
             catch (Exception ex)
             {
@@ -55,12 +48,14 @@ namespace Adfenix.Services.Service
         {
             try
             {
-                Server server = new ZendeskQueueCount();
+                /// Prepare Server - ZendeskQueue
+                ServerBase server = new ZendeskQueueCount();
                 Parameter[] parameters = server.getParameters();
                 ((StrParameter)parameters[0]).SetValue(input.Url);
                 ((StrParameter)parameters[0]).SetValue(input.Token);
 
-                return await server.ExecuteAsync();
+                /// Call Server
+                return await new Server(server).FetchCountAsync();
             }
             catch (Exception ex)
             {

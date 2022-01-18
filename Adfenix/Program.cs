@@ -3,7 +3,6 @@ using Adfenix.RequestModels.CommandRequestModels;
 using Adfenix.RequestModels.QueryRequestModels;
 using Adfenix.Services.Interface;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Adfenix

@@ -1,15 +1,10 @@
 ﻿using Adfenix.Helper;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Adfenix.Services.Service.Servers
 {
-    public class ZendeskQueueCount : Server
+    public class ZendeskQueueCount : ServerBase
     {
         string url;
         string token;
@@ -26,7 +21,7 @@ namespace Adfenix.Services.Service.Servers
         /// Gets count from ZendeskQueue
         /// </summary>
         /// <returns></returns>
-        public override async Task<string> ExecuteAsync()
+        public override async Task<string> FetchCountAsync()
         {
             string result = "";
 

@@ -1,12 +1,6 @@
 ﻿using Adfenix.RequestModels.CommandRequestModels;
 using Adfenix.Services.Interface;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Adfenix.Handlers.CommandHandlers
 {

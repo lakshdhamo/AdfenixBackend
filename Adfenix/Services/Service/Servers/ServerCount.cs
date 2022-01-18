@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Adfenix.Services.Service.Servers
 {
-    public class ServerCount : Server
+    public class ServerCount : ServerBase
     {
         int serverId;
 
@@ -18,7 +18,7 @@ namespace Adfenix.Services.Service.Servers
         /// Gets count from server
         /// </summary>
         /// <returns></returns>
-        public override async Task<string> ExecuteAsync()
+        public override async Task<string> FetchCountAsync()
         {
             string result = "";
 

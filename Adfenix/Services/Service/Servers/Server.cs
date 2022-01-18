@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Adfenix.Services.Service.Servers
+﻿namespace Adfenix.Services.Service.Servers
 {
-    public abstract class Server
+    /// <summary>
+    /// This is Server context class. 
+    /// It maintains a reference to a Server object
+    /// </summary>
+    public class Server
     {
-        public Server()
-        { }
+        private readonly ServerBase _serverBase;
+        public Server(ServerBase serverBase)
+        {
+            _serverBase = serverBase;
+        }
 
-        protected Parameter[] parameters;
-
-        public Parameter[] getParameters()
-        { return (Parameter[])parameters.Clone(); }
-
-        //public abstract void execute();
-        public abstract Task<string> ExecuteAsync();
+        /// <summary>
+        /// Gets count from plugged Server
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> FetchCountAsync()
+        {
+            return await _serverBase.FetchCountAsync();
+        }
     }
 }
