@@ -1,72 +1,91 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Net;
-using System.Text.RegularExpressions;
+﻿using Adfenix.Helper;
+using Adfenix.RequestModels.CommandRequestModels;
+using Adfenix.RequestModels.QueryRequestModels;
+using Adfenix.Services.Interface;
+using MediatR;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace CampaignQueueMonitor
+namespace Adfenix
 {
-    internal static class Program
+    internal partial class Program
     {
-        private const string VisualiserSeriesUri = "https://localhost/api/v1/series";
-        private const string VisualiserApiKey = "randomstring";
-        private const string CaseManagementQueueCountUrl = "https://localhost:9000";
-        private const string CaseManagementAuthToken = "Basic token";
+        private readonly ILogService _logService;
+        private readonly IMediator _mediator;
+
+        public Program(ILogService logService, IMediator mediator)
+        {
+            _logService = logService;
+            _mediator = mediator;
+        }
 
         public static void Main(string[] args)
         {
+            var host = CreateHostBuilder(args).Build();
+            ConfigureConstantValues(host);
+            host.Services.GetRequiredService<Program>().Run();
+        }
+
+        public void Run()
+        {
+            _logService.LogInfo("Program started.");
+
             var epochTimestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             short[] serverIds = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
-            foreach (var serverId in serverIds)
-                SendDataAsync($"Campaign.{serverId}", FetchNewCountFromServerAsync(serverId).Result, epochTimestamp);
 
-            SendDataAsync("Zendesk.Metric", FetchZendeskQueueCountAsync().Result, epochTimestamp);
-        }
-
-        private static async Task SendDataAsync(string metric, string value, int epochTimestamp)
-        {
-            var postMetricRequest = (HttpWebRequest)WebRequest.Create(VisualiserSeriesUri + "?api_key=" + VisualiserApiKey);
-            postMetricRequest.ContentType = "application/json";
-            postMetricRequest.Method = "POST";
-
-            using (var streamWriter = new StreamWriter(postMetricRequest.GetRequestStream()))
+            _ = Parallel.ForEach(serverIds, number =>
             {
-                var json = "{'series':[{'metric':'" + metric + "','points':[[" + epochTimestamp + "," + value + "]],'type':'count'}]}";
-                json = json.Replace("'", "\"");
-                await streamWriter.WriteAsync(json);
-            }
+                new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = Convert.ToInt32(Math.Ceiling((Environment.ProcessorCount * 0.75) * 2.0))
+                };
 
-            // note that this throws away the response as we don't need it
-            using var streamReader = new StreamReader(postMetricRequest.GetResponse().GetResponseStream() ?? throw new InvalidOperationException());
-            await streamReader?.ReadToEndAsync();
+                string value = FetchServerCount(number);
+                _logService.LogInfo($"Fetched count from Server: {number}");
+
+                SendData($"Campaign.{number}", value, epochTimestamp);
+                _logService.LogInfo($"SendData completed for Server: {number}");
+            });
+
+            string value = ZendeskQueueCount();
+            _logService.LogInfo("Fetched count from ZendeskQueue");
+
+            SendData("Zendesk.Metric", value, epochTimestamp);
+            _logService.LogInfo("Program completed.");
         }
 
-        private static async Task<string> FetchNewCountFromServerAsync(short serverId)
+        private void SendData(string value, string metric, int epochTimestamp)
         {
-            using var client = new WebClient();
-            var url = $"http://{serverId}.localhost.com/count";
-            try
+            SendDataRequestDto requestModel = new()
             {
-                var htmlCode = await client.DownloadStringTaskAsync(url);
-                const string newCount = "new count: (.*)";
-                var match = new Regex(newCount, RegexOptions.IgnoreCase).Match(htmlCode);
-                var campaignCount = match.Groups[1].Value;
-                Console.WriteLine($"Server: {serverId}   Campaign Queue Size: {campaignCount}");
-                return campaignCount;
-            }
-            catch (Exception)
-            {
-                return "failed";
-            }
+                epochTimestamp = epochTimestamp,
+                Metric = metric,
+                Value = value,
+                VisualiserSeriesUri = ConstantManager.VisualiserSeriesUri,
+                VisualiserApiKey = ConstantManager.VisualiserApiKey
+            };
+            _mediator.Send(requestModel);
         }
 
-        private static async Task<string> FetchZendeskQueueCountAsync()
+        private string FetchServerCount(int number)
         {
-            using var client = new WebClient();
-            client.Headers.Add("Authorization", CaseManagementAuthToken);
-            var json = await client.DownloadStringTaskAsync(CaseManagementQueueCountUrl);
-            var queueCount = JObject.Parse(json)["count"].ToString();
-            Console.WriteLine($"Zendesk Engineering Ticket count: {queueCount}");
-            return queueCount;
+            ServerCountRequestDto requestServer = new()
+            {
+                ServerId = number
+            };
+            return _mediator.Send(requestServer).Result;
         }
+
+        private string ZendeskQueueCount()
+        {
+            ZendeskQueueCountRequestDto requestZendesk = new()
+            {
+                Url = ConstantManager.CaseManagementQueueCountUrl,
+                Token = ConstantManager.CaseManagementAuthToken
+            };
+            return _mediator.Send(requestZendesk).Result;
+        }
+
     }
 }
