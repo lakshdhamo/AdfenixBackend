@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Adfenix.Handlers.QueryHandlers
 {
+    /// <summary>
+    /// Get ZendeskQueue count handler
+    /// </summary>
     public class GetZendeskQueueCountQueryHandler : IRequestHandler<ZendeskQueueCountRequestDto, string>
     {
         private readonly IDataReadService _dataReadService;
@@ -19,6 +22,13 @@ namespace Adfenix.Handlers.QueryHandlers
             _dataReadService = dataReadService;
             _logService = logService;
         }
+
+        /// <summary>
+        /// Handles ZendeskQueue count handler
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<string> Handle(ZendeskQueueCountRequestDto request, CancellationToken cancellationToken)
         {
             _logService.LogInfo("GetZendeskQueueCountQueryHandler called.");

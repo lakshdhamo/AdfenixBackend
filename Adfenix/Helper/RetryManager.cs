@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Adfenix.Helper
 {
+    /// <summary>
+    /// Retry logic
+    /// </summary>
     public static class RetryHelper
     {
         public static async Task RetryOnExceptionAsync<TException>(

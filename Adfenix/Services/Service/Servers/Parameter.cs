@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Adfenix.Services.Service.Servers
 {
+    /// <summary>
+    /// Parent Parameter class
+    /// </summary>
     public abstract class Parameter
     {
         private string name;
@@ -15,6 +18,9 @@ namespace Adfenix.Services.Service.Servers
         { this.name = name; }
     }
 
+    /// <summary>
+    /// Boolean parameter class
+    /// </summary>
     public class BoolParameter : Parameter
     {
         private bool Value;
@@ -29,6 +35,9 @@ namespace Adfenix.Services.Service.Servers
         }
     }
 
+    /// <summary>
+    /// String parameter class
+    /// </summary>
     public class StrParameter : Parameter
     {
         private string Value;
@@ -41,9 +50,11 @@ namespace Adfenix.Services.Service.Servers
         {
             Value = defaultvalue;
         }
-
     }
 
+    /// <summary>
+    /// Int parameter class
+    /// </summary>
     public class IntParameter : Parameter
     {
         private int min;
@@ -68,6 +79,9 @@ namespace Adfenix.Services.Service.Servers
         }
     }
 
+    /// <summary>
+    /// Double parameter class
+    /// </summary>
     public class DoubleParameter : Parameter
     {
         private double min;

@@ -12,6 +12,11 @@ namespace Adfenix
 {
     internal partial class Program
     {
+        /// <summary>
+        /// Configure hosting settings
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
@@ -37,6 +42,10 @@ namespace Adfenix
                 });
         }
 
+        /// <summary>
+        /// Configure Constant values
+        /// </summary>
+        /// <param name="host"></param>
         private static void ConfigureConstantValues(IHost host)
         {
             IConfiguration config = host.Services.GetRequiredService<IConfiguration>();

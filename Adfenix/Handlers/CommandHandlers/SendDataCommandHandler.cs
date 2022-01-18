@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Adfenix.Handlers.CommandHandlers
 {
+    /// <summary>
+    /// Send data handler
+    /// </summary>
     public class SendDataCommandHandler : IRequestHandler<SendDataRequestDto>
     {
         private readonly IDataWriteService _dataWriteService;
@@ -20,9 +23,14 @@ namespace Adfenix.Handlers.CommandHandlers
             _logService = logService;
         }
 
+        /// <summary>
+        /// Handles send data command
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<Unit> Handle(SendDataRequestDto request, CancellationToken cancellationToken)
         {
-
             _logService.LogInfo("SendDataCommandHandler called.");
             await _dataWriteService.SendDataAsync(request);
             return Unit.Value;

@@ -19,6 +19,10 @@ namespace Adfenix
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Main method to configure and run application
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
@@ -26,6 +30,9 @@ namespace Adfenix
             host.Services.GetRequiredService<Program>().Run();
         }
 
+        /// <summary>
+        /// Runs the application. Trigger point
+        /// </summary>
         public void Run()
         {
             _logService.LogInfo("Program started.");
@@ -34,18 +41,18 @@ namespace Adfenix
             short[] serverIds = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
 
-            _ = Parallel.ForEach(serverIds, number =>
+            _ = Parallel.ForEach(serverIds, serverId =>
             {
                 new ParallelOptions
                 {
                     MaxDegreeOfParallelism = Convert.ToInt32(Math.Ceiling((Environment.ProcessorCount * 0.75) * 2.0))
                 };
 
-                string value = FetchServerCount(number);
-                _logService.LogInfo($"Fetched count from Server: {number}");
+                string value = FetchServerCount(serverId);
+                _logService.LogInfo($"Fetched count from Server: {serverId}");
 
-                SendData($"Campaign.{number}", value, epochTimestamp);
-                _logService.LogInfo($"SendData completed for Server: {number}");
+                SendData($"Campaign.{serverId}", value, epochTimestamp);
+                _logService.LogInfo($"SendData completed for Server: {serverId}");
             });
 
             string value = ZendeskQueueCount();
@@ -55,6 +62,12 @@ namespace Adfenix
             _logService.LogInfo("Program completed.");
         }
 
+        /// <summary>
+        /// Sends data to server
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="metric"></param>
+        /// <param name="epochTimestamp"></param>
         private void SendData(string value, string metric, int epochTimestamp)
         {
             SendDataRequestDto requestModel = new()
@@ -68,6 +81,11 @@ namespace Adfenix
             _mediator.Send(requestModel);
         }
 
+        /// <summary>
+        /// Gets cound from server
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
         private string FetchServerCount(int number)
         {
             ServerCountRequestDto requestServer = new()
@@ -77,6 +95,10 @@ namespace Adfenix
             return _mediator.Send(requestServer).Result;
         }
 
+        /// <summary>
+        /// Gets count from ZendeskQueue
+        /// </summary>
+        /// <returns></returns>
         private string ZendeskQueueCount()
         {
             ZendeskQueueCountRequestDto requestZendesk = new()

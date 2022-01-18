@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace Adfenix.Services.Service
 {
+    /// <summary>
+    /// Handles all the read operations
+    /// </summary>
     public class DataReadService : IDataReadService
     {
         private readonly ILogService _logService;
@@ -21,6 +24,11 @@ namespace Adfenix.Services.Service
             _logService = logService;
         }
 
+        /// <summary>
+        /// Gets count from Server
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <returns></returns>
         public async Task<string> GetServerCountById(int serverId)
         {
             try
@@ -38,6 +46,11 @@ namespace Adfenix.Services.Service
             }
         }
 
+        /// <summary>
+        /// Gets count from ZendeskQueue
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task<string> GetServerCountById(ZendeskQueueCountRequestDto input)
         {
             try

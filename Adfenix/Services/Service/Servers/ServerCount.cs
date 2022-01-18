@@ -9,16 +9,20 @@ namespace Adfenix.Services.Service.Servers
 
         public ServerCount()
         {
+            /// Setting default Parameters
             parameters = new Parameter[1];
             parameters[0] = new IntParameter("Server Id", 1, 100, 1);
-
-            serverId = ((IntParameter)parameters[0]).GetValue();
         }
 
+        /// <summary>
+        /// Gets count from server
+        /// </summary>
+        /// <returns></returns>
         public override async Task<string> ExecuteAsync()
         {
             string result = "";
 
+            /// Perform action with retry
             await RetryHelper.RetryOnExceptionAsync<Exception>
                           (3, TimeSpan.FromSeconds(2), async () =>
                           {
@@ -27,8 +31,16 @@ namespace Adfenix.Services.Service.Servers
             return result;
         }
 
+        /// <summary>
+        /// Handles server count fetch logic
+        /// </summary>
+        /// <returns></returns>
         private async Task<string> GetServerCount()
         {
+            /// Gets parameter value
+            serverId = ((IntParameter)parameters[0]).GetValue();
+
+            ///Fetch logic
             var url = $"http://{serverId}.localhost.com/count";
 
             using HttpClient _httpClient = new HttpClient();

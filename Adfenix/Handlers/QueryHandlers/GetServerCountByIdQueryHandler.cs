@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Adfenix.QueryHandlers
 {
+    /// <summary>
+    /// Get Server count handler
+    /// </summary>
     public class GetServerCountByIdQueryHandler : IRequestHandler<ServerCountRequestDto, string>
     {
         private readonly IDataReadService _dataReadService;
@@ -19,6 +22,12 @@ namespace Adfenix.QueryHandlers
             _logService = logService;
         }
 
+        /// <summary>
+        /// Handles Server data count handler
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<string> Handle(ServerCountRequestDto request, CancellationToken cancellationToken)
         {
             _logService.LogInfo("GetServerCountByIdQueryHandler called.");

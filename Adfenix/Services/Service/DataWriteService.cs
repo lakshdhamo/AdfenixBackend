@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Adfenix.Services.Service
 {
+    /// <summary>
+    /// Handles all the write operations
+    /// </summary>
     public class DataWriteService : IDataWriteService
     {
         private readonly ILogService _logService;
@@ -19,10 +22,16 @@ namespace Adfenix.Services.Service
             _logService = logService;
         }
 
+        /// <summary>
+        /// Send the data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public async Task SendDataAsync(SendDataRequestDto data)
         {
             try
             {
+                /// Perform action with retry
                 await RetryHelper.RetryOnExceptionAsync<Exception>
                               (3, TimeSpan.FromSeconds(2), async () =>
                               {
@@ -35,6 +44,11 @@ namespace Adfenix.Services.Service
             }
         }
 
+        /// <summary>
+        /// Send data logic
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         private async Task PostDataAsync(SendDataRequestDto data)
         {
             var json = "{'series':[{'metric':'" + data.Metric + "','points':[[" + data.epochTimestamp + "," + data.Value + "]],'type':'count'}]}";
