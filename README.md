@@ -12,6 +12,13 @@
 5.	No logging
 6.	Exception is not handled properly
 
+## Approaches
+### Approach1 - Simple Design
+	Optimized the code using parallel programming and async/await.
+	
+### Approach2 - Detailed Design
+	Created structured design with loosely coupled and future growth maintainability. Also implemented parallel programming and async/await.
+
 ## Solution:
 1.	Made everything as **Asynchronous** call as much as possible
 	* Used async await
