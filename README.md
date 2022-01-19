@@ -1,5 +1,9 @@
 # Backend application
 
+## Steps to setup application:
+1. Install Visual Studio 2022
+2. Install .NET 6
+
 ## Problem
 1.	It is a synchronous program
 2.	It looks structured programming
@@ -38,4 +42,7 @@
 13. Implemented **Mediator pattern** using MediatR for separation of concern. 
 	* This pattern provides a mediator class which normally handles all the communications between different classes and supports easy maintenance of the code by loose coupling.
 	
-**Note:** I proposed this solution by keeping big picture in mind. This solution can be simplified based on the requirement.
+	
+	
+## Note: 
+I proposed this solution by keeping big picture in mind. This solution can be simplified based on the requirement.
