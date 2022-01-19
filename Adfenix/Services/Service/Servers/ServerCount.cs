@@ -41,18 +41,21 @@ namespace Adfenix.Services.Service.Servers
             serverId = ((IntParameter)parameters[0]).GetValue();
 
             ///Fetch logic
+            string result = string.Empty;
             var url = $"http://{serverId}.localhost.com/count";
-
             using HttpClient _httpClient = new HttpClient();
             using HttpResponseMessage response = await _httpClient.GetAsync(url);
-            using HttpContent content = response.Content;
-            var htmlCode = await content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                using HttpContent content = response.Content;
+                var htmlCode = await content.ReadAsStringAsync();
 
-            const string newCount = "new count: (.*)";
-            var match = new Regex(newCount, RegexOptions.IgnoreCase).Match(htmlCode);
-            var campaignCount = match.Groups[1].Value;
-            Console.WriteLine($"Server: {serverId}   Campaign Queue Size: {campaignCount}");
-            return campaignCount;
+                const string newCount = "new count: (.*)";
+                var match = new Regex(newCount, RegexOptions.IgnoreCase).Match(htmlCode);
+                var campaignCount = match.Groups[1].Value;
+                result = campaignCount;
+            }
+            return result;
 
         }
     }

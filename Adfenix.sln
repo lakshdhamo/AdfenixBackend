@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DetailedImplementation", "D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleImplementatin", "SimpleImplementatin", "{1BECCC63-609D-42C0-9F3D-E20EEDD4F64F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdfenixSimple", "AdfenixSimple\AdfenixSimple.csproj", "{6F91E508-7BAD-4F08-900F-3593760A687D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,12 +21,17 @@ Global
 		{5D45CB1D-9EFA-4D47-B572-EC00706AD01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D45CB1D-9EFA-4D47-B572-EC00706AD01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D45CB1D-9EFA-4D47-B572-EC00706AD01A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F91E508-7BAD-4F08-900F-3593760A687D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F91E508-7BAD-4F08-900F-3593760A687D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F91E508-7BAD-4F08-900F-3593760A687D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F91E508-7BAD-4F08-900F-3593760A687D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5D45CB1D-9EFA-4D47-B572-EC00706AD01A} = {4DBDF6CB-5226-4534-8529-D30083AD5952}
+		{6F91E508-7BAD-4F08-900F-3593760A687D} = {1BECCC63-609D-42C0-9F3D-E20EEDD4F64F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C9FC3E1-CD75-4E48-BE64-CF5D294BE765}

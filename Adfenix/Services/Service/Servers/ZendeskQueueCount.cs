@@ -14,7 +14,7 @@ namespace Adfenix.Services.Service.Servers
             /// Setting default Parameters
             parameters = new Parameter[2];
             parameters[0] = new StrParameter("Url", "");
-            parameters[1] = new StrParameter("Token", "");            
+            parameters[1] = new StrParameter("Token", "");
         }
 
         /// <summary>
@@ -46,15 +46,20 @@ namespace Adfenix.Services.Service.Servers
             token = ((StrParameter)parameters[1]).GetValue();
 
             ///Fetch logic
+            string result = string.Empty;
             using HttpClient _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", token);
             using HttpResponseMessage response = await _httpClient.GetAsync(url);
-            using HttpContent content = response.Content;
-            var json = await content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                using HttpContent content = response.Content;
+                var json = await content.ReadAsStringAsync();
 
-            var queueCount = JObject.Parse(json)["count"]?.ToString();
-            Console.WriteLine($"Zendesk Engineering Ticket count: {queueCount}");
-            return queueCount;
+                var queueCount = JObject.Parse(json)["count"]?.ToString();
+                Console.WriteLine($"Zendesk Engineering Ticket count: {queueCount}");
+                return queueCount ?? string.Empty;
+            }
+            return result;
         }
 
     }

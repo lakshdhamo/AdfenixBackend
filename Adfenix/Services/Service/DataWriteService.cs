@@ -51,7 +51,15 @@ namespace Adfenix.Services.Service
             using HttpClient _httpClient = new HttpClient();
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(data.VisualiserSeriesUri + "?api_key=" + data.VisualiserApiKey, content);
-            var responseString = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                _logService.LogInfo($"SendData is successful with {data.Value} - {data.Metric}");
+            }
+            else
+            {
+                _logService.LogInfo($"SendData is failed with {data.Value} - {data.Metric}");
+            }
         }
 
 
