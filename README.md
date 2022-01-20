@@ -14,10 +14,10 @@
 
 ## Approaches
 ### Approach1 - Simple Design
-	Optimized the code using parallel programming and async/await.
+Optimized the code using parallel programming and async/await.
 	
 ### Approach2 - Detailed Design
-	Created structured design with loosely coupled and future growth maintainability. Also implemented parallel programming and async/await.
+   Created structured design with loosely coupled and future growth maintainability. Also implemented parallel programming and async/await.
 
 ## Solution:
 1.	Made everything as **Asynchronous** call as much as possible
@@ -51,5 +51,3 @@
 	
 	
 	
-## Note: 
-I proposed this solution by keeping big picture in mind. This solution can be simplified based on the requirement.
