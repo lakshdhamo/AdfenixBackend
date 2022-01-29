@@ -43,7 +43,7 @@ namespace Adfenix.Services.Service.Servers
             ///Fetch logic
             string result = string.Empty;
             var url = $"http://{serverId}.localhost.com/count";
-            using HttpClient _httpClient = new HttpClient();
+            var _httpClient = HttpClientManager.HttpClientFactory.CreateClient();
             using HttpResponseMessage response = await _httpClient.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {

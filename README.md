@@ -11,6 +11,7 @@
 4.	Current structure will be complicated when system grows and hard to understand
 5.	No logging
 6.	Exception is not handled properly
+7.  Possibility of Socket Exhaustion when we call more HttpClient request.
 
 ## Solution:
 1.	Made everything as **Asynchronous** call as much as possible
@@ -25,6 +26,7 @@
 	* Added TryCatch in all the possible places. And captured the log
 6.	Used latest **HttpClient** module
 	* Replaces WebClient with HttpClient, because WebClient is obsolete. 
+	* Used IHttpClientFactory to create instance for HttpClient. This will handle Socket Exhaustion.
 7.	Used **config file**
 	* Moved the hard coded values to config file - appsettings.json
 8.	Used **Dependency Injection**
@@ -41,7 +43,7 @@
 	* CQRS stands for Command and Query Responsibility Segregation, a pattern that separates read and update operations for a data store. CQRS in your application can maximize its performance, scalability, and security. It has advantages of Single Responsibility Principle, Independent Scaling, Separation of Concern.
 13. Implemented **Mediator pattern** using MediatR for separation of concern. 
 	* This pattern provides a mediator class which normally handles all the communications between different classes and supports easy maintenance of the code by loose coupling.
-	
+
 	
 	
 ## Note: 

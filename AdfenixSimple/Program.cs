@@ -12,6 +12,8 @@ namespace AdfenixSimple
         private static string VisualiserApiKey;
         private static string CaseManagementQueueCountUrl;
         private static string CaseManagementAuthToken;
+        private static IHttpClientFactory httpClientFactory;
+
         /// <summary>
         /// Main method to configure and run application
         /// </summary>
@@ -19,6 +21,8 @@ namespace AdfenixSimple
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+            /// To Avoid Socket Exhaustion
+            httpClientFactory = host.Services.GetService<IHttpClientFactory>();
             ConfigureConstantValues(host);
             await Run();
         }
@@ -64,7 +68,7 @@ namespace AdfenixSimple
                 var json = "{'series':[{'metric':'" + metric + "','points':[[" + epochTimestamp + "," + value + "]],'type':'count'}]}";
                 json = json.Replace("'", "\"");
 
-                using HttpClient _httpClient = new HttpClient();
+                var _httpClient = httpClientFactory.CreateClient();
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync(VisualiserSeriesUri + "?api_key=" + VisualiserApiKey, content);
                 if (response.IsSuccessStatusCode)
@@ -95,7 +99,7 @@ namespace AdfenixSimple
             {
                 ///Fetch logic
                 var url = $"http://{serverId}.localhost.com/count";
-                using HttpClient _httpClient = new HttpClient();
+                var _httpClient = httpClientFactory.CreateClient();
                 using HttpResponseMessage response = await _httpClient.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)
@@ -131,7 +135,7 @@ namespace AdfenixSimple
             try
             {
                 ///Fetch logic
-                using HttpClient _httpClient = new HttpClient();
+                var _httpClient = httpClientFactory.CreateClient();
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", CaseManagementAuthToken);
                 using HttpResponseMessage response = await _httpClient.GetAsync(CaseManagementQueueCountUrl);
                 if (response.IsSuccessStatusCode)

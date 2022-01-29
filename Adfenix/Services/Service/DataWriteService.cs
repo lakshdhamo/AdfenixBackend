@@ -48,7 +48,7 @@ namespace Adfenix.Services.Service
             var json = "{'series':[{'metric':'" + data.Metric + "','points':[[" + data.epochTimestamp + "," + data.Value + "]],'type':'count'}]}";
             json = json.Replace("'", "\"");
 
-            using HttpClient _httpClient = new HttpClient();
+            var _httpClient = HttpClientManager.HttpClientFactory.CreateClient();
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(data.VisualiserSeriesUri + "?api_key=" + data.VisualiserApiKey, content);
             if (response.IsSuccessStatusCode)

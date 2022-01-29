@@ -25,6 +25,7 @@ namespace Adfenix
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+            HttpClientManager.HttpClientFactory = host.Services.GetService<IHttpClientFactory>();
             ConfigureConstantValues(host);
             host.Services.GetRequiredService<Program>().Run();
         }

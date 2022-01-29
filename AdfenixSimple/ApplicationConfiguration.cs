@@ -32,6 +32,7 @@ namespace AdfenixSimple
                 .ConfigureServices(services =>
                 {
                     services.AddTransient<Program>();
+                    services.AddHttpClient();
                 });
         }
 

@@ -39,6 +39,7 @@ namespace Adfenix
                     services.AddScoped<ILogService, LogService>();
                     services.AddLogging(configure => configure.AddConsole())
                         .AddTransient<LogService>();
+                    services.AddHttpClient();
                 });
         }
 

@@ -47,7 +47,7 @@ namespace Adfenix.Services.Service.Servers
 
             ///Fetch logic
             string result = string.Empty;
-            using HttpClient _httpClient = new HttpClient();
+            var _httpClient = HttpClientManager.HttpClientFactory.CreateClient();
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", token);
             using HttpResponseMessage response = await _httpClient.GetAsync(url);
             if (response.IsSuccessStatusCode)
